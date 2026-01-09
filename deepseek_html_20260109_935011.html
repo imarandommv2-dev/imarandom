@@ -1,0 +1,1563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scat Mods - Donut SMP Modifications</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* DARKER SPACE THEME */
+        :root {
+            --cosmic-purple: #2a0f54;
+            --nebula-purple: #5a1d9a;
+            --star-blue: #2a4bcc;
+            --galaxy-indigo: #1f0a61;
+            --void-black: #05010f;
+            --cosmic-pink: #c81f6b;
+            --text-light: #c5b5ff;
+            --text-glow: #7a3dbb;
+            --success-green: #36a9d0;
+            --warning-orange: #d67c14;
+            --admin-red: #ff4757;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--void-black);
+            color: var(--text-light);
+            min-height: 100vh;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* SPACE BACKGROUND WITH ANIMATIONS */
+        .space-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+        }
+
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite alternate;
+        }
+
+        .star.small { width: 1px; height: 1px; }
+        .star.medium { width: 2px; height: 2px; }
+        .star.large { width: 3px; height: 3px; }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        .nebula {
+            position: absolute;
+            width: 800px;
+            height: 800px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(90, 29, 154, 0.1) 0%, transparent 70%);
+            filter: blur(60px);
+            animation: float 40s infinite linear;
+        }
+
+        .nebula:nth-child(1) {
+            top: -200px;
+            left: -200px;
+            background: radial-gradient(circle, rgba(90, 29, 154, 0.15) 0%, transparent 70%);
+            animation-duration: 50s;
+        }
+
+        .nebula:nth-child(2) {
+            bottom: -200px;
+            right: -200px;
+            background: radial-gradient(circle, rgba(42, 75, 204, 0.1) 0%, transparent 70%);
+            animation-duration: 60s;
+            animation-direction: reverse;
+        }
+
+        @keyframes float {
+            0% { transform: rotate(0deg) translateX(0px) rotate(0deg); }
+            100% { transform: rotate(360deg) translateX(50px) rotate(-360deg); }
+        }
+
+        /* PULSING PLANET */
+        .pulsing-planet {
+            position: absolute;
+            top: 50%;
+            right: 10%;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(200, 31, 107, 0.1) 0%, transparent 60%);
+            filter: blur(40px);
+            animation: pulse 8s infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.3; }
+            100% { transform: scale(1.2); opacity: 0.6; }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* DARKER HEADER */
+        header {
+            background: linear-gradient(90deg, rgba(42, 15, 84, 0.9), rgba(31, 10, 97, 0.9));
+            padding: 1.5rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 2px solid var(--cosmic-pink);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            color: var(--cosmic-pink);
+            font-size: 2.5rem;
+            text-shadow: 0 0 20px var(--cosmic-pink);
+            animation: glow 2s infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 10px var(--cosmic-pink); }
+            to { text-shadow: 0 0 25px var(--cosmic-pink), 0 0 30px var(--cosmic-pink); }
+        }
+
+        .logo h1 {
+            font-size: 2.2rem;
+            background: linear-gradient(to right, #c5b5ff, #7a3dbb);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 15px rgba(122, 61, 187, 0.5);
+        }
+
+        .logo span {
+            color: var(--cosmic-pink);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            background: rgba(90, 29, 154, 0.2);
+            border: 1px solid rgba(90, 29, 154, 0.3);
+        }
+
+        nav a:hover, nav a.active {
+            background: rgba(200, 31, 107, 0.3);
+            color: white;
+            box-shadow: 0 0 20px rgba(200, 31, 107, 0.5);
+            border-color: var(--cosmic-pink);
+            transform: translateY(-2px);
+        }
+
+        /* HIDDEN ADMIN TRIGGER */
+        .admin-trigger {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 71, 87, 0.1);
+            border: 1px dashed rgba(255, 71, 87, 0.3);
+            border-radius: 50%;
+            cursor: pointer;
+            opacity: 0.3;
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+
+        .admin-trigger:hover {
+            opacity: 0.6;
+            background: rgba(255, 71, 87, 0.2);
+            border-color: rgba(255, 71, 87, 0.5);
+        }
+
+        /* HIDDEN ADMIN PANEL */
+        .admin-panel {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            width: 90%;
+            max-width: 800px;
+            max-height: 80vh;
+            background: linear-gradient(135deg, rgba(31, 10, 97, 0.95), rgba(42, 15, 84, 0.95));
+            border: 3px solid var(--admin-red);
+            border-radius: 20px;
+            padding: 30px;
+            z-index: 1000;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 0 50px rgba(255, 71, 87, 0.5);
+            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            overflow-y: auto;
+            display: none;
+        }
+
+        .admin-panel.active {
+            transform: translate(-50%, -50%) scale(1);
+            display: block;
+            animation: adminAppear 0.5s ease;
+        }
+
+        @keyframes adminAppear {
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+            100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        }
+
+        .admin-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(5, 1, 15, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 999;
+            display: none;
+        }
+
+        .admin-overlay.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--admin-red);
+        }
+
+        .admin-header h3 {
+            color: var(--admin-red);
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-shadow: 0 0 10px rgba(255, 71, 87, 0.5);
+        }
+
+        .admin-close {
+            background: none;
+            border: none;
+            color: var(--admin-red);
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 5px;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .admin-close:hover {
+            background: rgba(255, 71, 87, 0.2);
+            transform: rotate(90deg);
+        }
+
+        .admin-form {
+            display: grid;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-group label i {
+            color: var(--admin-red);
+        }
+
+        .form-group input, .form-group textarea {
+            padding: 12px 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(90, 29, 154, 0.5);
+            background: rgba(13, 1, 23, 0.7);
+            color: var(--text-light);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--admin-red);
+            box-shadow: 0 0 15px rgba(255, 71, 87, 0.3);
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .admin-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(90, 29, 154, 0.4);
+        }
+
+        .admin-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .save-btn {
+            background: linear-gradient(45deg, var(--admin-red), #ff6b81);
+            color: white;
+        }
+
+        .delete-btn {
+            background: linear-gradient(45deg, #2d3436, #636e72);
+            color: white;
+        }
+
+        .cancel-btn {
+            background: linear-gradient(45deg, var(--star-blue), #4361ee);
+            color: white;
+        }
+
+        .admin-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        /* DARKER HERO SECTION */
+        .hero {
+            text-align: center;
+            padding: 5rem 0;
+            position: relative;
+            border-radius: 0 0 30px 30px;
+            overflow: hidden;
+            margin-bottom: 3rem;
+            background: linear-gradient(135deg, rgba(31, 10, 97, 0.4), rgba(42, 15, 84, 0.2));
+            border-bottom: 2px solid var(--cosmic-pink);
+        }
+
+        .hero h2 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, #7a3dbb, #c81f6b);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 25px rgba(200, 31, 107, 0.7);
+            animation: titleGlow 3s infinite alternate;
+        }
+
+        @keyframes titleGlow {
+            0% { text-shadow: 0 0 20px rgba(200, 31, 107, 0.5); }
+            100% { text-shadow: 0 0 30px rgba(200, 31, 107, 0.8), 0 0 40px rgba(200, 31, 107, 0.6); }
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            color: var(--text-light);
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .discord-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(45deg, #4752c4, #7a3dbb);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(71, 82, 196, 0.4);
+            margin-top: 1rem;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            animation: buttonPulse 2s infinite;
+        }
+
+        @keyframes buttonPulse {
+            0%, 100% { box-shadow: 0 5px 20px rgba(71, 82, 196, 0.4); }
+            50% { box-shadow: 0 5px 30px rgba(71, 82, 196, 0.8); }
+        }
+
+        .discord-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(71, 82, 196, 0.6);
+            background: linear-gradient(45deg, #5d69e6, #8a4dd0);
+        }
+
+        /* DARKER MOD CARDS */
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--text-light);
+            position: relative;
+            text-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 3px;
+            background: linear-gradient(to right, var(--cosmic-purple), var(--cosmic-pink));
+            border-radius: 3px;
+            box-shadow: 0 0 10px var(--cosmic-pink);
+        }
+
+        .mods-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 4rem;
+        }
+
+        .mod-card {
+            background: linear-gradient(145deg, rgba(42, 15, 84, 0.8), rgba(31, 10, 97, 0.6));
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.4s ease;
+            border: 1px solid rgba(90, 29, 154, 0.4);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(5px);
+        }
+
+        .mod-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, var(--cosmic-pink), var(--star-blue));
+            box-shadow: 0 0 15px var(--cosmic-pink);
+        }
+
+        .mod-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .mod-card:hover::after {
+            left: 100%;
+        }
+
+        .mod-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+            border-color: var(--cosmic-pink);
+        }
+
+        .mod-icon {
+            font-size: 2.8rem;
+            color: var(--cosmic-pink);
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px var(--cosmic-pink);
+            animation: iconFloat 3s infinite ease-in-out;
+        }
+
+        @keyframes iconFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .mod-card h3 {
+            font-size: 1.6rem;
+            margin-bottom: 10px;
+            color: white;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .mod-card p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            opacity: 0.9;
+            margin-bottom: 15px;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .mod-version {
+            display: inline-block;
+            background: rgba(54, 169, 208, 0.15);
+            color: var(--success-green);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+            border: 1px solid var(--success-green);
+            text-shadow: 0 0 10px rgba(54, 169, 208, 0.3);
+        }
+
+        .mod-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .mod-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .download-btn {
+            background: linear-gradient(45deg, var(--success-green), #1d7a8f);
+            color: white;
+            border: 1px solid rgba(54, 169, 208, 0.3);
+        }
+
+        .info-btn {
+            background: linear-gradient(45deg, var(--nebula-purple), var(--star-blue));
+            color: white;
+            border: 1px solid rgba(90, 29, 154, 0.3);
+        }
+
+        .edit-btn {
+            background: linear-gradient(45deg, var(--admin-red), #ff6b81);
+            color: white;
+            border: 1px solid rgba(255, 71, 87, 0.3);
+            display: none; /* Hidden by default */
+        }
+
+        .mod-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .mod-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.6s ease;
+            margin-top: 20px;
+            text-align: left;
+            border-top: 1px solid rgba(90, 29, 154, 0.4);
+            padding-top: 20px;
+            color: var(--text-light);
+            font-size: 0.9rem;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .mod-card.active .mod-details {
+            max-height: 500px;
+        }
+
+        /* NOTIFICATION SYSTEM */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            z-index: 10000;
+            transform: translateX(150%);
+            transition: transform 0.5s ease;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            max-width: 400px;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            background: linear-gradient(45deg, rgba(54, 169, 208, 0.9), rgba(29, 122, 143, 0.9));
+            border-left: 5px solid var(--success-green);
+        }
+
+        .notification.error {
+            background: linear-gradient(45deg, rgba(255, 71, 87, 0.9), rgba(255, 107, 129, 0.9));
+            border-left: 5px solid var(--admin-red);
+        }
+
+        .notification.info {
+            background: linear-gradient(45deg, rgba(42, 75, 204, 0.9), rgba(67, 97, 238, 0.9));
+            border-left: 5px solid var(--star-blue);
+        }
+
+        /* RESPONSIVE DESIGN */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+            }
+            
+            .hero h2 {
+                font-size: 2.5rem;
+            }
+            
+            .mods-container {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .mod-actions {
+                flex-direction: column;
+            }
+            
+            .pulsing-planet {
+                display: none;
+            }
+            
+            .admin-panel {
+                width: 95%;
+                padding: 20px;
+                max-height: 90vh;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h2 {
+                font-size: 2rem;
+            }
+            
+            .mods-container {
+                grid-template-columns: 1fr;
+            }
+            
+            nav ul {
+                gap: 10px;
+            }
+            
+            nav a {
+                padding: 8px 12px;
+                font-size: 1rem;
+            }
+            
+            .mod-btn {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* PAGE CONTENT */
+        .page-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .page-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* SCROLLBAR */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--void-black);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(var(--cosmic-purple), var(--cosmic-pink));
+            border-radius: 6px;
+            border: 2px solid var(--void-black);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(var(--cosmic-pink), var(--star-blue));
+        }
+    </style>
+</head>
+<body>
+    <!-- SPACE BACKGROUND WITH ANIMATIONS -->
+    <div class="space-background">
+        <div class="stars" id="stars"></div>
+        <div class="nebula"></div>
+        <div class="nebula"></div>
+        <div class="pulsing-planet"></div>
+    </div>
+    
+    <!-- HIDDEN ADMIN TRIGGER -->
+    <div class="admin-trigger" id="adminTrigger" title="Secret Admin Access"></div>
+    
+    <!-- HIDDEN ADMIN PANEL -->
+    <div class="admin-overlay" id="adminOverlay"></div>
+    <div class="admin-panel" id="adminPanel">
+        <div class="admin-header">
+            <h3><i class="fas fa-user-shield"></i> SECRET ADMIN PANEL</h3>
+            <button class="admin-close" id="adminClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="admin-form">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="modName"><i class="fas fa-cube"></i> Mod Name:</label>
+                    <input type="text" id="modName" placeholder="e.g., Auto Builder">
+                </div>
+                <div class="form-group">
+                    <label for="modIcon"><i class="fas fa-icons"></i> Icon Class:</label>
+                    <input type="text" id="modIcon" placeholder="fa-robot" value="fa-robot">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="modVersion"><i class="fas fa-code-branch"></i> Version:</label>
+                    <input type="text" id="modVersion" placeholder="e.g., 1.21.0" value="1.21.0">
+                </div>
+                <div class="form-group">
+                    <label for="fileSize"><i class="fas fa-weight-hanging"></i> File Size:</label>
+                    <input type="text" id="fileSize" placeholder="e.g., 2.4 MB">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="modDescription"><i class="fas fa-align-left"></i> Short Description:</label>
+                <textarea id="modDescription" placeholder="Brief description of the mod..."></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="modDetails"><i class="fas fa-info-circle"></i> Detailed Information:</label>
+                <textarea id="modDetails" placeholder="Detailed information about the mod..."></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="downloadUrl"><i class="fas fa-link"></i> Download URL:</label>
+                <input type="url" id="downloadUrl" placeholder="https://example.com/your-mod.jar">
+            </div>
+            
+            <div class="form-group">
+                <label for="fileName"><i class="fas fa-file-archive"></i> File Name:</label>
+                <input type="text" id="fileName" placeholder="e.g., autobuilder_v1.21.jar">
+            </div>
+            
+            <div class="admin-actions">
+                <button class="admin-btn delete-btn" id="deleteMod">
+                    <i class="fas fa-trash"></i> Delete
+                </button>
+                <button class="admin-btn cancel-btn" id="cancelEdit">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
+                <button class="admin-btn save-btn" id="saveMod">
+                    <i class="fas fa-save"></i> Save Mod
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- NOTIFICATION SYSTEM -->
+    <div id="notification" class="notification"></div>
+    
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-gamepad"></i>
+                </div>
+                <h1>SCAT <span>MODS</span></h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#" class="nav-link active" data-page="home">Home</a></li>
+                    <li><a href="#" class="nav-link" data-page="mods">Mods</a></li>
+                    <li><a href="#" class="nav-link" data-page="faq">FAQ</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Home Page -->
+        <section id="home" class="page-content active">
+            <div class="hero">
+                <div class="hero-content">
+                    <h2>Scat Mods for Donut SMP</h2>
+                    <p>Enhance your Donut SMP experience with our cosmic collection of mods. From auto-building to clever duping tools, we've got what you need to dominate the server!</p>
+                    <a href="https://discord.gg/QdneWEdT" target="_blank" class="discord-btn">
+                        <i class="fab fa-discord"></i> Join Our Discord Server
+                    </a>
+                </div>
+            </div>
+
+            <div class="featured-mods">
+                <h2 class="section-title">Featured Mods</h2>
+                <div class="mods-container" id="featuredMods">
+                    <!-- Featured mods will be loaded here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Mods Page -->
+        <section id="mods" class="page-content">
+            <h2 class="section-title">All Mods</h2>
+            <div class="mods-container" id="allMods">
+                <!-- All mods will be loaded here -->
+            </div>
+        </section>
+
+        <!-- FAQ Page -->
+        <section id="faq" class="page-content">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>How do I install these mods?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p><strong>Step-by-Step Installation:</strong><br>
+                        1. Click the download button on any mod<br>
+                        2. The .jar file will be saved to your computer<br>
+                        3. Make sure you have Fabric or Forge installed for Minecraft 1.21<br>
+                        4. Place the .jar file in your Minecraft 'mods' folder<br>
+                        5. Launch Minecraft with the mod loader<br>
+                        6. Join Donut SMP and enjoy!</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>What version of Minecraft are these mods for?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>All Scat Mods are specifically designed for <strong>Minecraft 1.21</strong>. Make sure your game and mod loader are updated to this version for compatibility.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Are these mods safe to use?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes! All mods are:<br>
+                        • Scanned for malware/viruses<br>
+                        • Tested on Donut SMP<br>
+                        • Regularly updated for security<br>
+                        • Only available from our official website</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Why isn't my mod working?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p><strong>Common fixes:</strong><br>
+                        • Ensure Minecraft is version 1.21<br>
+                        • Install correct mod loader (Fabric/Forge)<br>
+                        • Check for conflicting mods<br>
+                        • Allocate more RAM to Minecraft<br>
+                        • Check our Discord for troubleshooting help</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Can I use multiple mods together?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Most Scat Mods are designed to work together, but some may have conflicts. We recommend:<br>
+                        • Testing in single-player first<br>
+                        • Checking our Discord for compatibility notes<br>
+                        • Loading mods one at a time to identify issues</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container footer-content">
+            <div class="donut-smp-badge">
+                <i class="fas fa-donut"></i> Made for Donut SMP Community - Minecraft 1.21
+            </div>
+            <a href="https://discord.gg/QdneWEdT" target="_blank" class="discord-btn">
+                <i class="fab fa-discord"></i> Get Support on Discord
+            </a>
+            <p class="copyright">© 2023 Scat Mods. Not affiliated with Mojang or Minecraft.</p>
+        </div>
+    </footer>
+
+    <script>
+        // ===== SECRET ADMIN SYSTEM =====
+        const SECRET_COMBO = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65]; // ↑↑↓↓←→←→BA (Konami Code)
+        let keySequence = [];
+        let adminMode = false;
+        let currentEditId = null;
+
+        // ===== STARFIELD ANIMATION =====
+        function createStarfield() {
+            const starsContainer = document.getElementById('stars');
+            const starCount = 200;
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                const size = Math.random() * 3;
+                const starType = size < 1 ? 'small' : size < 2 ? 'medium' : 'large';
+                
+                star.className = `star ${starType}`;
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.opacity = Math.random() * 0.7 + 0.3;
+                star.style.animationDelay = `${Math.random() * 3}s`;
+                star.style.animationDuration = `${Math.random() * 2 + 2}s`;
+                
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // ===== MOD MANAGEMENT SYSTEM =====
+        let mods = [
+            {
+                id: 1,
+                name: "Donut Dupe",
+                icon: "fa-donut",
+                version: "1.21.0",
+                description: "Advanced duplication tools for Donut SMP resources",
+                details: "This mod provides various duplication methods specifically tested on Donut SMP. Features include item frame duping, rail duping, and chunk-based duplication techniques.",
+                downloadUrl: "",
+                fileName: "donut_dupe_v1.21.jar",
+                fileSize: "2.1 MB"
+            },
+            {
+                id: 2,
+                name: "Tools+",
+                icon: "fa-tools",
+                version: "1.21.0",
+                description: "Enhanced tools with durability and efficiency boosts",
+                details: "Upgrade your tools with increased durability, efficiency, and special abilities. Includes auto-smelt pickaxes, fortune boosters, and silk touch enhancements.",
+                downloadUrl: "",
+                fileName: "tools_enhanced_v1.21.jar",
+                fileSize: "1.8 MB"
+            },
+            {
+                id: 3,
+                name: "Auto Builder",
+                icon: "fa-robot",
+                version: "1.21.0",
+                description: "Automated building assistance for large projects",
+                details: "Plan and execute complex builds automatically. Features include schematic importing, blueprint creation, and automated block placement with resource tracking.",
+                downloadUrl: "",
+                fileName: "auto_builder_v1.21.jar",
+                fileSize: "3.2 MB"
+            },
+            {
+                id: 4,
+                name: "Krypton",
+                icon: "fa-bolt",
+                version: "1.21.0",
+                description: "Network optimization and performance enhancement",
+                details: "Significantly reduces lag and improves connection stability on Donut SMP. Includes packet optimization, entity management, and chunk loading improvements.",
+                downloadUrl: "",
+                fileName: "krypton_network_v1.21.jar",
+                fileSize: "1.5 MB"
+            },
+            {
+                id: 5,
+                name: "Radium",
+                icon: "fa-atom",
+                version: "1.21.0",
+                description: "Radiation-based gameplay mechanics and tools",
+                details: "Adds radiation mechanics to Donut SMP with Geiger counters, radioactive materials, and radiation-based power systems. Includes protective gear and decontamination tools.",
+                downloadUrl: "",
+                fileName: "radium_mod_v1.21.jar",
+                fileSize: "2.4 MB"
+            },
+            {
+                id: 6,
+                name: "Rig",
+                icon: "fa-cogs",
+                version: "1.21.0",
+                description: "Advanced redstone and machinery automation",
+                details: "Create complex redstone contraptions with simplified interfaces. Features include programmable logic blocks, wireless redstone, and machinery automation systems.",
+                downloadUrl: "",
+                fileName: "rig_automation_v1.21.jar",
+                fileSize: "2.7 MB"
+            },
+            {
+                id: 7,
+                name: "Gamble",
+                icon: "fa-dice",
+                version: "1.21.0",
+                description: "Casino and gambling mini-games for Donut SMP",
+                details: "Adds casino games like slot machines, poker, and blackjack to Donut SMP. Includes currency systems, leaderboards, and custom game creation tools.",
+                downloadUrl: "",
+                fileName: "gamble_games_v1.21.jar",
+                fileSize: "4.1 MB"
+            }
+        ];
+
+        // ===== INITIALIZE EVERYTHING =====
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("🌌 Scat Mods website initializing...");
+            
+            // Create starfield
+            createStarfield();
+            
+            // Load saved mods from localStorage
+            loadSavedMods();
+            
+            // Initialize all components
+            initNavigation();
+            initFAQ();
+            initSecretAdmin();
+            initAdminPanel();
+            initNotifications();
+            
+            // Render mods
+            renderMods();
+            
+            console.log("✅ Website loaded successfully!");
+            console.log("🔐 Secret Admin: Type the Konami Code (↑↑↓↓←→←→BA) or click the hidden dot");
+        });
+
+        // ===== SECRET ADMIN ACTIVATION =====
+        function initSecretAdmin() {
+            // Key sequence detection (Konami Code)
+            document.addEventListener('keydown', function(e) {
+                keySequence.push(e.keyCode);
+                if (keySequence.length > SECRET_COMBO.length) {
+                    keySequence.shift();
+                }
+                
+                // Check if sequence matches
+                if (keySequence.length === SECRET_COMBO.length && 
+                    keySequence.every((val, idx) => val === SECRET_COMBO[idx])) {
+                    activateAdminMode();
+                }
+            });
+            
+            // Hidden dot click
+            document.getElementById('adminTrigger').addEventListener('click', function(e) {
+                e.preventDefault();
+                activateAdminMode();
+            });
+            
+            // Triple click on logo to activate
+            let clickCount = 0;
+            let clickTimer;
+            document.querySelector('.logo').addEventListener('click', function() {
+                clickCount++;
+                clearTimeout(clickTimer);
+                
+                if (clickCount === 3) {
+                    activateAdminMode();
+                    clickCount = 0;
+                }
+                
+                clickTimer = setTimeout(() => {
+                    clickCount = 0;
+                }, 500);
+            });
+        }
+
+        function activateAdminMode() {
+            if (!adminMode) {
+                adminMode = true;
+                showNotification("🔓 ADMIN MODE ACTIVATED! Edit buttons unlocked.", "success");
+                
+                // Show edit buttons on all mod cards
+                document.querySelectorAll('.edit-btn').forEach(btn => {
+                    btn.style.display = 'flex';
+                });
+                
+                // Show hidden trigger more prominently
+                const trigger = document.getElementById('adminTrigger');
+                trigger.style.opacity = '0.8';
+                trigger.style.background = 'rgba(255, 71, 87, 0.3)';
+                trigger.style.border = '2px solid rgba(255, 71, 87, 0.6)';
+                trigger.style.width = '30px';
+                trigger.style.height = '30px';
+                trigger.style.boxShadow = '0 0 15px rgba(255, 71, 87, 0.5)';
+                
+                // Play activation sound effect (optional)
+                playSound('activate');
+                
+                console.log("🔓 Admin mode activated!");
+            }
+        }
+
+        function playSound(type) {
+            // Simple beep sounds
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                if (type === 'activate') {
+                    oscillator.frequency.setValueAtTime(880, audioContext.currentTime);
+                    oscillator.frequency.setValueAtTime(1760, audioContext.currentTime + 0.1);
+                } else if (type === 'success') {
+                    oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime);
+                    oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1);
+                }
+                
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.3);
+            } catch (e) {
+                console.log("Audio not supported");
+            }
+        }
+
+        // ===== ADMIN PANEL FUNCTIONS =====
+        function initAdminPanel() {
+            // Open panel when edit button is clicked (only in admin mode)
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.edit-btn') && adminMode) {
+                    const modId = parseInt(e.target.closest('.mod-card').dataset.id);
+                    openEditPanel(modId);
+                }
+            });
+            
+            // Close panel
+            document.getElementById('adminClose').addEventListener('click', closeAdminPanel);
+            document.getElementById('adminOverlay').addEventListener('click', closeAdminPanel);
+            document.getElementById('cancelEdit').addEventListener('click', closeAdminPanel);
+            
+            // Save mod
+            document.getElementById('saveMod').addEventListener('click', saveMod);
+            
+            // Delete mod
+            document.getElementById('deleteMod').addEventListener('click', deleteMod);
+            
+            // Escape key to close
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && document.getElementById('adminPanel').classList.contains('active')) {
+                    closeAdminPanel();
+                }
+            });
+        }
+
+        function openEditPanel(modId) {
+            if (!adminMode) return;
+            
+            const mod = mods.find(m => m.id === modId);
+            currentEditId = modId;
+            
+            // Fill form with mod data
+            document.getElementById('modName').value = mod.name;
+            document.getElementById('modIcon').value = mod.icon;
+            document.getElementById('modVersion').value = mod.version;
+            document.getElementById('modDescription').value = mod.description;
+            document.getElementById('modDetails').value = mod.details;
+            document.getElementById('downloadUrl').value = mod.downloadUrl || '';
+            document.getElementById('fileName').value = mod.fileName || '';
+            document.getElementById('fileSize').value = mod.fileSize || '';
+            
+            // Show panel
+            document.getElementById('adminOverlay').classList.add('active');
+            document.getElementById('adminPanel').classList.add('active');
+            
+            // Focus on first input
+            setTimeout(() => {
+                document.getElementById('modName').focus();
+            }, 100);
+            
+            showNotification(`Editing: ${mod.name}`, "info");
+            playSound('success');
+        }
+
+        function closeAdminPanel() {
+            document.getElementById('adminOverlay').classList.remove('active');
+            document.getElementById('adminPanel').classList.remove('active');
+            resetForm();
+        }
+
+        function saveMod() {
+            const name = document.getElementById('modName').value.trim();
+            const icon = document.getElementById('modIcon').value.trim();
+            const version = document.getElementById('modVersion').value.trim();
+            const description = document.getElementById('modDescription').value.trim();
+            const details = document.getElementById('modDetails').value.trim();
+            const downloadUrl = document.getElementById('downloadUrl').value.trim();
+            const fileName = document.getElementById('fileName').value.trim();
+            const fileSize = document.getElementById('fileSize').value.trim();
+            
+            if (!name || !version) {
+                showNotification("Mod name and version are required!", "error");
+                return;
+            }
+            
+            const modData = {
+                id: currentEditId || mods.length + 1,
+                name,
+                icon: icon || "fa-cube",
+                version,
+                description: description || "No description provided.",
+                details: details || "No details provided.",
+                downloadUrl,
+                fileName: fileName || `${name.toLowerCase().replace(/ /g, '_')}_v${version}.jar`,
+                fileSize: fileSize || "Unknown"
+            };
+            
+            if (currentEditId) {
+                // Update existing mod
+                const index = mods.findIndex(m => m.id === currentEditId);
+                mods[index] = { ...mods[index], ...modData };
+                showNotification(`✅ Updated ${name}`, "success");
+            } else {
+                // Add new mod
+                mods.push(modData);
+                showNotification(`✅ Added new mod: ${name}`, "success");
+            }
+            
+            // Save and refresh
+            saveModsToStorage();
+            renderMods();
+            closeAdminPanel();
+            playSound('success');
+        }
+
+        function deleteMod() {
+            if (!currentEditId) return;
+            
+            const mod = mods.find(m => m.id === currentEditId);
+            const confirmed = confirm(`⚠️ Are you sure you want to delete "${mod.name}"?\n\nThis action cannot be undone!`);
+            
+            if (confirmed) {
+                mods = mods.filter(m => m.id !== currentEditId);
+                saveModsToStorage();
+                renderMods();
+                closeAdminPanel();
+                showNotification(`🗑️ Deleted ${mod.name}`, "success");
+            }
+        }
+
+        function resetForm() {
+            document.getElementById('modName').value = '';
+            document.getElementById('modIcon').value = 'fa-cube';
+            document.getElementById('modVersion').value = '1.21.0';
+            document.getElementById('modDescription').value = '';
+            document.getElementById('modDetails').value = '';
+            document.getElementById('downloadUrl').value = '';
+            document.getElementById('fileName').value = '';
+            document.getElementById('fileSize').value = '';
+            currentEditId = null;
+        }
+
+        // ===== LOAD/SAVE MODS =====
+        function loadSavedMods() {
+            const savedMods = localStorage.getItem('scatMods');
+            if (savedMods) {
+                const parsed = JSON.parse(savedMods);
+                mods = parsed.map(savedMod => {
+                    const defaultMod = mods.find(m => m.name === savedMod.name) || {};
+                    return { ...defaultMod, ...savedMod };
+                });
+                console.log("📂 Loaded mods from localStorage:", mods.length);
+            }
+        }
+
+        function saveModsToStorage() {
+            localStorage.setItem('scatMods', JSON.stringify(mods));
+            console.log("💾 Mods saved to localStorage");
+        }
+
+        // ===== NAVIGATION =====
+        function initNavigation() {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const pageContents = document.querySelectorAll('.page-content');
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const page = this.getAttribute('data-page');
+                    
+                    // Update active nav link
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Show selected page
+                    pageContents.forEach(content => {
+                        content.classList.remove('active');
+                        if (content.id === page) {
+                            content.classList.add('active');
+                        }
+                    });
+                });
+            });
+        }
+
+        // ===== RENDER MODS =====
+        function renderMods() {
+            const featuredContainer = document.getElementById('featuredMods');
+            const allContainer = document.getElementById('allMods');
+            
+            featuredContainer.innerHTML = '';
+            allContainer.innerHTML = '';
+            
+            // Featured mods (first 4)
+            mods.slice(0, 4).forEach(mod => {
+                featuredContainer.appendChild(createModCard(mod));
+            });
+            
+            // All mods
+            mods.forEach(mod => {
+                allContainer.appendChild(createModCard(mod));
+            });
+            
+            console.log(`🎮 Rendered ${mods.length} mods`);
+        }
+
+        function createModCard(mod) {
+            const card = document.createElement('div');
+            card.className = 'mod-card';
+            card.dataset.id = mod.id;
+            
+            const hasDownload = mod.downloadUrl;
+            
+            card.innerHTML = `
+                <div class="mod-icon">
+                    <i class="fas ${mod.icon}"></i>
+                </div>
+                <h3>${mod.name}</h3>
+                <p>${mod.description}</p>
+                <div class="mod-version">v${mod.version} • MC 1.21 • ${mod.fileSize}</div>
+                <div class="mod-actions">
+                    <button class="mod-btn download-btn" onclick="downloadMod(${mod.id})" ${!hasDownload ? 'disabled style="opacity: 0.6;"' : ''}>
+                        <i class="fas fa-download"></i> ${hasDownload ? 'Download' : 'Coming Soon'}
+                    </button>
+                    <button class="mod-btn info-btn" onclick="toggleModDetails(${mod.id})">
+                        <i class="fas fa-info-circle"></i> Details
+                    </button>
+                    <button class="mod-btn edit-btn" onclick="editMod(${mod.id})">
+                        <i class="fas fa-edit"></i> Edit
+                    </button>
+                </div>
+                <div class="mod-details" id="details-${mod.id}">
+                    <p><strong>Details:</strong> ${mod.details}</p>
+                    <p><strong>File:</strong> ${mod.fileName || 'No file uploaded'}</p>
+                    ${mod.downloadUrl ? `<p><strong>Direct Link:</strong> <a href="${mod.downloadUrl}" target="_blank" style="color: var(--success-green); text-decoration: none;">Download here</a></p>` : ''}
+                </div>
+            `;
+            
+            return card;
+        }
+
+        // ===== MOD ACTIONS =====
+        function toggleModDetails(modId) {
+            const details = document.getElementById(`details-${modId}`);
+            const card = details.closest('.mod-card');
+            
+            if (details.style.maxHeight && details.style.maxHeight !== '0px') {
+                details.style.maxHeight = '0';
+                card.classList.remove('active');
+            } else {
+                details.style.maxHeight = details.scrollHeight + 'px';
+                card.classList.add('active');
+            }
+        }
+
+        function downloadMod(modId) {
+            const mod = mods.find(m => m.id === modId);
+            
+            if (!mod.downloadUrl) {
+                alert(`⚠️ No download link available for ${mod.name} yet!\n\nPlease check back later or join our Discord for updates.`);
+                return;
+            }
+            
+            const confirmed = confirm(`📥 Download ${mod.name} v${mod.version} for Minecraft 1.21?\n\nFile: ${mod.fileName}\nSize: ${mod.fileSize}`);
+            
+            if (confirmed) {
+                window.open(mod.downloadUrl, '_blank');
+                
+                // Create a subtle animation effect
+                const card = document.querySelector(`.mod-card[data-id="${modId}"] .download-btn`);
+                card.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Downloading...';
+                card.disabled = true;
+                
+                setTimeout(() => {
+                    card.innerHTML = '<i class="fas fa-download"></i> Download';
+                    card.disabled = false;
+                }, 1500);
+            }
+        }
+
+        function editMod(modId) {
+            if (adminMode) {
+                openEditPanel(modId);
+            }
+        }
+
+        // ===== FAQ SYSTEM =====
+        function initFAQ() {
+            const faqQuestions = document.querySelectorAll('.faq-question');
+            faqQuestions.forEach(question => {
+                question.addEventListener('click', function() {
+                    const faqItem = this.parentElement;
+                    faqItem.classList.toggle('active');
+                    
+                    const toggle = this.querySelector('.faq-toggle');
+                    toggle.textContent = faqItem.classList.contains('active') ? '−' : '+';
+                });
+            });
+        }
+
+        // ===== NOTIFICATION SYSTEM =====
+        function initNotifications() {
+            // Already initialized by DOM
+        }
+
+        function showNotification(message, type = 'info') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type} show`;
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 4000);
+        }
+
+        // ===== UTILITY FUNCTIONS =====
+        function addCustomIcons() {
+            const style = document.createElement('style');
+            style.textContent = `
+                .fa-donut:before {
+                    content: "🍩";
+                    font-style: normal;
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        // ===== DEBUG CONSOLE =====
+        console.log("🚀 Scat Mods Dark Space Theme Activated!");
+        console.log("🔐 SECRET ADMIN SYSTEM:");
+        console.log("1. Type the Konami Code: ↑↑↓↓←→←→BA");
+        console.log("2. Click the hidden red dot (bottom-left)");
+        console.log("3. Triple-click the logo");
+        console.log("✨ Then Edit buttons will appear!");
+    </script>
+</body>
+</html>
